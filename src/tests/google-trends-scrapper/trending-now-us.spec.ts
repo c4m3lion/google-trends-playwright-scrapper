@@ -4,7 +4,7 @@ import CSVToJsonConverter from "@utils/csv-json-converter.service";
 
 test.describe('Trending Now US', () => {
     test('get table as json', async ({ page }) => {
-        await page.goto('https://trends.google.com/trending?geo=US&sort=search-volume&hours=24&status=active');
+        await page.goto('https://trends.google.com/trending?geo=US&sort=search-volume&hours=2');
         await page.waitForLoadState('networkidle');
 
         await page.getByRole('button', { name: 'Export   ▾' }).click();
