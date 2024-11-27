@@ -14,6 +14,7 @@ test.describe('Trending Now US', () => {
         const filePath = await download.path();
         const jsonObj = await CSVToJsonConverter.convert(filePath);
         console.log(jsonObj);
+        console.log('Hi !!');
 
     });
 });
