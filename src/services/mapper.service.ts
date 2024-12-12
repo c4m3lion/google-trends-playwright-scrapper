@@ -67,8 +67,8 @@ export class MapperService {
 
         return {
             trendText: data.Trends,
-            stared: this.convertToISO(data.Started),
-            ended: this.convertToISO(data.Ended),
+            stared: data.Started,
+            ended: data.Ended,
             traffic: data['Search volume']
         };
     }
