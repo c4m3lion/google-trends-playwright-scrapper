@@ -3,6 +3,11 @@ import * as fs from 'fs';
 
 test.describe('NBA scrap', () => {
     test('get the NBA data', async ({ page }) => {
+
+        if (!fs.existsSync('nba-report')) {
+            fs.mkdirSync('nba-report');
+        }
+
         await page.goto('https://www.nba.com/schedule');
         await page.waitForLoadState('networkidle');
         // save page html to local file
@@ -64,9 +69,6 @@ test.describe('NBA scrap', () => {
         //save to local json file with nba-{date}.json
         const date = new Date().toISOString().split("T")[0];
         // create a directory if it does not exist
-        if (!fs.existsSync('nba-report')) {
-            fs.mkdirSync('nba-report');
-        }
         fs.writeFileSync(`nba-report/nba-${date}.json`, JSON.stringify(jsonData, null, 2));
     });
 });
