@@ -9,7 +9,8 @@ test.describe('NBA scrap', () => {
         }
 
         await page.goto('https://www.nba.com/schedule');
-        await page.waitForLoadState('networkidle');
+        await page.waitForSelector(".ScheduleWeek_swBase__6wxQ7");
+        await page.waitForTimeout(5000);
         // save page html to local file
         fs.writeFileSync('nba-report/nba-schedule.html', await page.content());
         // save page css to local file
