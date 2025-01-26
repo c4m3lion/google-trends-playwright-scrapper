@@ -22,7 +22,6 @@ test.describe('NBA scrap', () => {
             });
             return css;
         }));
-        return;
         await page.locator('#onetrust-accept-btn-handler').first().click();
         await page.goto('https://www.nba.com/schedule');
         // wait for ScheduleWeek_swBase__6wxQ7 to load
