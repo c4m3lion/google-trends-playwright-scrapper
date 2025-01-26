@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ main, master ]
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '0 * * * *'
 jobs:
   playwright-nba:
     timeout-minutes: 60
