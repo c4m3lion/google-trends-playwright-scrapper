@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
+    "test:nba": "playwright test nba-scapper.spec.ts",
     "test-ui": "playwright test --ui --debug",
     "test-debug": "playwright test --debug",
     "test-codegen": "playwright codegen"
