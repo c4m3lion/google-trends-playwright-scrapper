@@ -5,7 +5,7 @@ test.describe('NBA scrap', () => {
     test('get the NBA data', async ({ page }) => {
         await page.goto('https://www.nba.com/schedule');
         await page.waitForLoadState('networkidle');
-        await page.locator('#onetrust-accept-btn-handler').click();
+        await page.locator('#onetrust-accept-btn-handler').first().click();
         await page.goto('https://www.nba.com/schedule');
         // wait for ScheduleWeek_swBase__6wxQ7 to load
         await page.waitForSelector(".ScheduleWeek_swBase__6wxQ7");
