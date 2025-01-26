@@ -5,6 +5,18 @@ test.describe('NBA scrap', () => {
     test('get the NBA data', async ({ page }) => {
         await page.goto('https://www.nba.com/schedule');
         await page.waitForLoadState('networkidle');
+        // save page html to local file
+        fs.writeFileSync('nba-report/nba-schedule.html', await page.content());
+        // save page css to local file
+        fs.writeFileSync('nba-report/nba-schedule.css', await page.evaluate(() => {
+            const styles = document.querySelectorAll('style');
+            let css = '';
+            styles.forEach((style) => {
+                css += style.innerHTML;
+            });
+            return css;
+        }));
+        return;
         await page.locator('#onetrust-accept-btn-handler').first().click();
         await page.goto('https://www.nba.com/schedule');
         // wait for ScheduleWeek_swBase__6wxQ7 to load
@@ -51,6 +63,10 @@ test.describe('NBA scrap', () => {
         console.log(jsonData);
         //save to local json file with nba-{date}.json
         const date = new Date().toISOString().split("T")[0];
-        fs.writeFileSync(`nba-${date}.json`, JSON.stringify(jsonData, null, 2));
+        // create a directory if it does not exist
+        if (!fs.existsSync('nba-report')) {
+            fs.mkdirSync('nba-report');
+        }
+        fs.writeFileSync(`nba-report/nba-${date}.json`, JSON.stringify(jsonData, null, 2));
     });
 });
