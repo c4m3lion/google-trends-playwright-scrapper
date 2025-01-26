@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:nba": "export PWDEBUG=1 && playwright test nba-scapper.spec.ts",
+    "test:nba": "playwright test nba-scapper.spec.ts",
     "test-ui": "playwright test --ui --debug",
     "test-debug": "playwright test --debug",
     "test-codegen": "playwright codegen"
