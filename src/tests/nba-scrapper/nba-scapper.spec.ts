@@ -42,26 +42,48 @@ test.describe('NBA scrap', () => {
                 games: []
             }
             for(let j = 0; j < gamesNumber; j++) {
-                const gameTime = await games.locator(".ScheduleStatusText_base__Jgvjb").nth(j).textContent();
-                const gameImg = await games.locator(".Broadcasters_icon__82MTV").nth(j).getAttribute("src");
-                const gameLocalTv = await games.locator(".Broadcasters_tv__AIeZb").nth(j).textContent();
-                const gameLocation = await games.locator(".ScheduleGame_sgLocationInner__xxr0Z").nth(j).textContent();
-                const team1 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(0).textContent();
-                const team2 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(1).textContent();
-                const gameid = await games.nth(j).locator(".TabLink_tab__uKOPj .TabLink_link__f_15h").first().getAttribute("href");
-                //gameid will be /game/lal-vs-cha-0022400648 give me the id and lal abd cha seperated
-                const gameId = gameid.split("-")[3];
-                weekData.games.push({
-                    gameTime,
-                    gameImg,
-                    gameLocalTv,
-                    gameLocation,
-                    teams: {
-                        team1,
-                        team2
-                    },
-                    id: gameId,
-                });
+                try {
+                    const isFinalText = await games.locator('.ScheduleGame_sgStatus__NqtTI .ScheduleStatusText_base__Jgvjb').nth(j).innerText();
+                    if(isFinalText.includes("FINAL")) {
+                        const gameLocation = await games.locator(".ScheduleGame_sgLocationInner__xxr0Z").nth(j).textContent();
+                        const team1 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(0).textContent();
+                        const team2 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(1).textContent();
+                        const gameid = await games.nth(j).locator(".TabLink_tab__uKOPj .TabLink_link__f_15h").first().getAttribute("href");
+                        //gameid will be /game/lal-vs-cha-0022400648 give me the id and lal abd cha seperated
+                        const gameId = gameid.split("-")[3];
+                        weekData.games.push({
+                            gameLocation,
+                            teams: {
+                                team1,
+                                team2
+                            },
+                            id: gameId,
+                        });
+                    } else {
+                        const gameTime = await games.locator(".ScheduleStatusText_base__Jgvjb").nth(j).textContent();
+                        const gameImg = await games.locator(".Broadcasters_icon__82MTV").nth(j).getAttribute("src");
+                        const gameLocalTv = await games.locator(".Broadcasters_tv__AIeZb").nth(j).textContent();
+                        const gameLocation = await games.locator(".ScheduleGame_sgLocationInner__xxr0Z").nth(j).textContent();
+                        const team1 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(0).textContent();
+                        const team2 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(1).textContent();
+                        const gameid = await games.nth(j).locator(".TabLink_tab__uKOPj .TabLink_link__f_15h").first().getAttribute("href");
+                        //gameid will be /game/lal-vs-cha-0022400648 give me the id and lal abd cha seperated
+                        const gameId = gameid.split("-")[3];
+                        weekData.games.push({
+                            gameTime,
+                            gameImg,
+                            gameLocalTv,
+                            gameLocation,
+                            teams: {
+                                team1,
+                                team2
+                            },
+                            id: gameId,
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
             jsonData.push(weekData);
 
@@ -73,7 +95,7 @@ test.describe('NBA scrap', () => {
         fs.writeFileSync(`nba-report/nba-${date}.json`, JSON.stringify(jsonData, null, 2));
 
         try {
-            const response = await axios.put('https://advayo-api.azurewebsites.net/api/NbaMatch/create', JSON.stringify(jsonData));
+            const response = await axios.post('https://advayo-api.azurewebsites.net/api/NbaMatch/create', JSON.stringify(jsonData));
             console.log('PUT request successful:', response.data);
             expect(response.status).toBe(200);
         } catch (error) {
