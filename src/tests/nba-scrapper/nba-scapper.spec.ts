@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import * as fs from 'fs';
+import axios from "axios";
 
 test.describe('NBA scrap', () => {
     test('get the NBA data', async ({ page }) => {
@@ -70,5 +71,14 @@ test.describe('NBA scrap', () => {
         const date = new Date().toISOString().split("T")[0];
         // create a directory if it does not exist
         fs.writeFileSync(`nba-report/nba-${date}.json`, JSON.stringify(jsonData, null, 2));
+
+        try {
+            const response = await axios.put('https://advayo-api.azurewebsites.net/api/NbaMatch/create', JSON.stringify(jsonData));
+            console.log('PUT request successful:', response.data);
+            expect(response.status).toBe(200);
+        } catch (error) {
+            console.error('Error in PUT request:', error);
+            expect(error).toBeNull();
+        }
     });
 });
