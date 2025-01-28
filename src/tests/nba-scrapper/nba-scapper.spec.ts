@@ -45,6 +45,7 @@ test.describe('NBA scrap', () => {
                 try {
                     const isFinalText = await games.locator('.ScheduleGame_sgStatus__NqtTI .ScheduleStatusText_base__Jgvjb').nth(j).innerText();
                     if(isFinalText.includes("FINAL")) {
+                        continue;
                         const gameLocation = await games.locator(".ScheduleGame_sgLocationInner__xxr0Z").nth(j).textContent();
                         const team1 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(0).textContent();
                         const team2 = await games.nth(j).locator(".ScheduleGame_sgMatchup__SK1PV .Anchor_anchor__cSc3P").nth(1).textContent();
